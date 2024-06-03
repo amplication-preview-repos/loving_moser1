@@ -1,0 +1,36 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Quiz {
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  questions String?
+  title     String?
+  updatedAt DateTime @updatedAt
+}
+
+model Course {
+  author      String?
+  createdAt   DateTime @default(now())
+  description String?
+  id          String   @id @default(cuid())
+  lessons     Lesson[]
+  title       String?
+  updatedAt   DateTime @updatedAt
+}
+
+model Lesson {
+  content   String?
+  course    Course?  @relation(fields: [courseId], references: [id])
+  courseId  String?
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  title     String?
+  updatedAt DateTime @updatedAt
+}
